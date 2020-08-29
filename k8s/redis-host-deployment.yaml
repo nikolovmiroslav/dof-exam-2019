@@ -34,3 +34,21 @@ spec:
       serviceAccountName: ""
       volumes: null
 status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    io.kompose.service: redis-host
+    app: dof-exam-2019
+  name: redis-host
+spec:
+  ports:
+  - name: "6379"
+    port: 6379
+    targetPort: 6379
+  selector:
+    io.kompose.service: redis-host
+status:
+  loadBalancer: {}
+  
