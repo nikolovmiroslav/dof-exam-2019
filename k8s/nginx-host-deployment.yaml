@@ -33,6 +33,7 @@ spec:
         volumeMounts:
         - name: app
           mountPath: /site
+          subPath: app
           readOnly: true      
         ports:
         - containerPort: 80
@@ -42,7 +43,7 @@ spec:
         gitRepo:
           repository: https://github.com/nikolovmiroslav/dof-exam-2019.git
           revision: master
-          directory: app
+          directory: .
       restartPolicy: Always
       serviceAccountName: ""
 status: {}
