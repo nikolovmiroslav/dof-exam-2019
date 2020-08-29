@@ -30,20 +30,9 @@ spec:
       - image: %GITHUB-PLACEHOLDER%/%IMAGE-PLACEHOLDER%:%IMAGE-TAG-PLACEHOLDER%
         imagePullPolicy: ""
         name: php-host
-        volumeMounts:
-        - name: app
-          mountPath: /site
-          subPath: app
-          readOnly: true      
         ports:
         - containerPort: 9000
         resources: {}
-      volumes:
-      - name: app
-        gitRepo:
-          repository: https://github.com/nikolovmiroslav/dof-exam-2019.git
-          revision: master
-          directory: .
       restartPolicy: Always
       serviceAccountName: ""
 status: {}
