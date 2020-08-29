@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose_alt.yml -o ./k8s
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: php-host
+    app: dof-exam-2019
+  name: php-host
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: php-host
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose_alt.yml -o ./k8s
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: php-host
+        app: dof-exam-2019
+    spec:
+      containers:
+      - image: %GITHUB-PLACEHOLDER%/%IMAGE-PLACEHOLDER%:%IMAGE-TAG-PLACEHOLDER%
+        imagePullPolicy: ""
+        name: php-host
+        volumeMounts:
+        - name: app
+          mountPath: /site
+          readOnly: true      
+        ports:
+        - containerPort: 9000
+        resources: {}
+      volumes:
+      - name: app
+        gitRepo:
+          repository: https://github.com/nikolovmiroslav/dof-exam-2019.git
+          revision: master
+          directory: ./app
+      restartPolicy: Always
+      serviceAccountName: ""
+status: {}
+---
+  apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -f docker-compose_alt.yml -o ./k8s
+      kompose.version: 1.21.0 (992df58d8)
+    creationTimestamp: null
+    labels:
+      io.kompose.service: php-host
+      app: dof-exam-2019
+    name: php-host
+  spec:
+    ports:
+    - name: "9000"
+      port: 9000
+      targetPort: 9000
+    selector:
+      io.kompose.service: php-host
+  status:
+    loadBalancer: {}
+  
