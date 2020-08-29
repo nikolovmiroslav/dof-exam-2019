@@ -60,10 +60,12 @@ metadata:
     app: dof-exam-2019
   name: nginx-host
 spec:
+  type: NodePort
   ports:
   - name: "80"
     port: 80
     targetPort: 80
+    nodePort: 38080
   selector:
     io.kompose.service: nginx-host
 status:
