@@ -42,12 +42,12 @@ spec:
         gitRepo:
           repository: https://github.com/nikolovmiroslav/dof-exam-2019.git
           revision: master
-          directory: ./app
+          directory: app
       restartPolicy: Always
       serviceAccountName: ""
 status: {}
 ---
-  apiVersion: v1
+apiVersion: v1
 kind: Service
 metadata:
   annotations:
