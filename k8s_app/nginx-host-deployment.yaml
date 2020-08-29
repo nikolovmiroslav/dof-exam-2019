@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose_alt.yml -o ./k8s
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: nginx-host
+    app: dof-exam-2019
+  name: nginx-host
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      io.kompose.service: nginx-host
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose_alt.yml -o ./k8s
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: nginx-host
+        app: dof-exam-2019
+    spec:
+      containers:
+      - image: %GITHUB-PLACEHOLDER%/%IMAGE-PLACEHOLDER%:%IMAGE-TAG-PLACEHOLDER%
+        imagePullPolicy: ""
+        name: nginx-host
+        volumeMounts:
+        - name: app
+          mountPath: /site
+          subPath: app
+          readOnly: true      
+        ports:
+        - containerPort: 80
+        resources: {}
+      volumes:
+      - name: app
+        gitRepo:
+          repository: https://github.com/nikolovmiroslav/dof-exam-2019.git
+          revision: master
+          directory: .
+      restartPolicy: Always
+      serviceAccountName: ""
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose_alt.yml -o ./k8s
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: nginx-host
+    app: dof-exam-2019
+  name: nginx-host
+spec:
+  type: NodePort
+  ports:
+  - name: "80"
+    port: 80
+    targetPort: 80
+    nodePort: 30080
+  selector:
+    io.kompose.service: nginx-host
+status:
+  loadBalancer: {}
+
